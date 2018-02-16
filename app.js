@@ -29,14 +29,25 @@ const convertFile = (fileName = path.join(__dirname, 'customer-data.csv'), outpu
 
 const parseToJson = (data) => {
     const prepData = data.map(x => x.trim().split(','))
-    convertToJson = (x) => {
-        return x.map((a,i) => `${prepData[0][i]}:${a}`)
-    }
-    const json = prepData.slice(1,prepData.length).map(convertToJson).toString('\n')
-    console.log(json)
-}
-const parseToXML = (data) => {
 
+    convertToJson = (x) => {
+        var object2json = {}
+        for (let i = 0; i < x.length;i++){
+            object2json[prepData[0][i]] = x[i];
+        }
+        return object2json
+    }
+
+    const json = JSON.stringify(prepData.slice(1,prepData.length).map(convertToJson),null, 2)
+    const stream = fs.createWriteStream('customer.json')
+    stream.write(json,()=>{ stream.close() })
+
+    //console.log(json)
+}
+
+//Implimentation needed
+const parseToXML = (data) => {
+    //TO-DO
 }
 
 
